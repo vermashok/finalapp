@@ -21,12 +21,8 @@ You must define your connection string in the constants.js file.
 
 Locate constants.js in the project root.
 
-Update the DATABASE_URL with your MongoDB URI.
-
 // constants.js example
-export const DATABASE_URL = "mongodb://localhost:27017/your_database_name";
-// If using MongoDB Atlas:
-// export const DATABASE_URL = "mongodb+srv://user:pass@cluster.mongodb.net/dbname";
+export const DATABASE_URL = "http://localhost:3000/api/";
 
 
 3. Network & Firewall Configuration (Crucial)
@@ -65,29 +61,8 @@ To generate standalone files for the mobile app, use the following Expo commands
 
 For Android (APK/AAB):
 
-# To build locally
-npx expo run:android --variant release
-
-# To build via EAS (Cloud)
-eas build --platform android
 
 
-For iOS (IPA):
-
-# To build locally
-npx expo run:ios --configuration Release
-
-# To build via EAS (Cloud)
-eas build --platform ios
-
-
-📥 Download Expo Go
-
-To test the app on your physical device, download the Expo Go app:
-
-Android: Download on Google Play Store
-
-iOS: Download on Apple App Store
 
 🔗 Important Links
 
