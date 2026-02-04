@@ -1,8 +1,13 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { NavigationScreenProp } from 'react-navigation';
 
-const Footer = ({ navigation }) => (
+interface FooterProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+const Footer: React.FC<FooterProps> = ({ navigation }) => (
   <View style={styles.footer}>
     <TouchableOpacity onPress={() => navigation.navigate('Feed')} style={styles.button}>
       <FontAwesome name="home" size={24} color="#22223b" />

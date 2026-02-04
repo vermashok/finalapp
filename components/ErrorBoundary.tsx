@@ -1,17 +1,26 @@
-import React from 'react';
+import React, { ErrorInfo, ReactNode } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 
-class ErrorBoundary extends React.Component {
-  constructor(props) {
+interface Props {
+  children: ReactNode;
+  onRestart?: () => void;
+}
+
+interface State {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends React.Component<Props, State> {
+  constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error): State {
     return { hasError: true };
   }
 
-  componentDidCatch(error, info) {
+  componentDidCatch(error: Error, info: ErrorInfo) {
     // Log error to an error reporting service if needed
     console.error(error, info);
   }

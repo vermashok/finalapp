@@ -1,13 +1,17 @@
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, TouchableOpacity } from 'react-native';
 import Header from '../components/Header';
 import useAuth from '../hooks/useAuth';
+import { NavigationScreenProp } from 'react-navigation';
 
-export default function SignUpScreen({ navigation }) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+interface SignUpScreenProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+export default function SignUpScreen({ navigation }: SignUpScreenProps) {
+  const [name, setName] = useState<string>('');
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
   const { register, loading, error } = useAuth();
 
   const handleSignUp = async () => {

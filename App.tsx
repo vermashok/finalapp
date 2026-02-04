@@ -5,7 +5,7 @@ import AppNavigator from './navigation/AppNavigator';
 import ErrorBoundary from './components/ErrorBoundary';
 import useCheckAuth from './hooks/useCheckAuth';
 
-export default function App() {
+const App: React.FC = () => {
   const [fontsLoaded] = useFonts({
     Raleway_400Regular,
     Raleway_700Bold,
@@ -22,3 +22,5 @@ export default function App() {
     </ErrorBoundary>
   );
 }
+
+export default App;

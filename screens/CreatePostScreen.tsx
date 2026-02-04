@@ -1,15 +1,19 @@
-
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
 import Header from '../components/Header';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../constants';
+import { NavigationScreenProp } from 'react-navigation';
 
-export default function CreatePostScreen({ navigation }) {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+interface CreatePostScreenProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+export default function CreatePostScreen({ navigation }: CreatePostScreenProps) {
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleCreate = async () => {
     setError(null);
@@ -23,7 +27,7 @@ export default function CreatePostScreen({ navigation }) {
       const res = await fetch(`${API_BASE_URL}posts`, {
         method: 'POST',
         headers: {
-          'x-auth-token': token,
+          'x-auth-token': token as string,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ title, description })
@@ -36,7 +40,7 @@ export default function CreatePostScreen({ navigation }) {
       setTitle('');
       setDescription('');
       navigation.navigate('PostDetails', { postId: newPost._id || newPost.id });
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);

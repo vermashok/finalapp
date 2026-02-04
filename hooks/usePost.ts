@@ -2,11 +2,34 @@ import { useState, useCallback } from 'react';
 import { API_BASE_URL } from '../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default function usePost(postId) {
-  const [post, setPost] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+export interface Post {
+  id: string;
+  content: string;
+  author: {
+    id: string;
+    name: string;
+  };
+  createdAt: string;
+  title: string;
+  likes: string[];
+  currentUserId: string;
+}
+
+export interface Comment {
+  id: string;
+  content: string;
+  author: {
+    id: string;
+    name: string;
+  };
+  createdAt: string;
+}
+
+export default function usePost(postId: string) {
+  const [post, setPost] = useState<Post | null>(null);
+  const [comments, setComments] = useState<Comment[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchPost = useCallback(async () => {
     if (!postId) {
@@ -19,12 +42,12 @@ export default function usePost(postId) {
     try {
       const token = await AsyncStorage.getItem('token');
       const res = await fetch(`${API_BASE_URL}posts/${postId}`, {
-        headers: { 'x-auth-token': token }
+        headers: { 'x-auth-token': token as string }
       });
       if (!res.ok) throw new Error('Failed to fetch post');
       const data = await res.json();
       setPost(data);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
       setPost(null);
     } finally {
@@ -42,12 +65,12 @@ export default function usePost(postId) {
     try {
       const token = await AsyncStorage.getItem('token');
       const res = await fetch(`${API_BASE_URL}posts/${postId}/comments`, {
-        headers: { 'x-auth-token': token }
+        headers: { 'x-auth-token': token as string }
       });
       if (!res.ok) throw new Error('Failed to fetch comments');
       const data = await res.json();
       setComments(data);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
       setComments([]);
     } finally {

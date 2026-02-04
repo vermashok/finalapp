@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function useCheckAuth() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     AsyncStorage.getItem('token').then(token => {

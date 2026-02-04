@@ -3,9 +3,14 @@ import { View, Text, FlatList, RefreshControl, StyleSheet, TouchableOpacity, Act
 import { FontAwesome } from '@expo/vector-icons';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import useFeed from '../hooks/useFeed';
+import useFeed, { Post } from '../hooks/useFeed';
+import { NavigationScreenProp } from 'react-navigation';
 
-export default function FeedScreen({ navigation }) {
+interface FeedScreenProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+export default function FeedScreen({ navigation }: FeedScreenProps) {
   const { posts, loading, error, fetchPosts, refresh, hasMore } = useFeed();
 
   useEffect(() => {
@@ -13,7 +18,7 @@ export default function FeedScreen({ navigation }) {
   }, []);
 
   const sortedPosts = useMemo(() => {
-    return [...posts].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    return [...posts].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   }, [posts]);
 
   const onRefresh = useCallback(() => {
@@ -24,11 +29,11 @@ export default function FeedScreen({ navigation }) {
     if (!loading && hasMore) fetchPosts();
   }, [loading, hasMore, fetchPosts]);
 
-  const renderItem = useCallback(({ item }) => (
-    <TouchableOpacity style={styles.postCard} onPress={() => navigation.navigate('PostDetails', { postId: item._id })}>
+  const renderItem = useCallback(({ item }: { item: Post }) => (
+    <TouchableOpacity style={styles.postCard} onPress={() => navigation.navigate('PostDetails', { postId: item.id })}>
       <Text style={styles.title}>{item.title}</Text>
       <Text style={styles.author}>By {item.author?.name || 'Unknown'}</Text>
-      <Text style={styles.description}>{item.description}</Text>
+      <Text style={styles.description}>{item.content}</Text>
       <View style={styles.meta}>
         <FontAwesome name="heart" size={16} color="#e63946" />
         <Text style={styles.metaText}>{item.likes?.length || 0}</Text>
@@ -44,7 +49,7 @@ export default function FeedScreen({ navigation }) {
       {error ? <Text style={{ color: 'red', textAlign: 'center' }}>{error}</Text> : null}
       <FlatList
         data={sortedPosts}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item.id}
         renderItem={renderItem}
         refreshControl={<RefreshControl refreshing={loading} onRefresh={onRefresh} />}
         contentContainerStyle={styles.listContent}

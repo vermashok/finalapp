@@ -2,11 +2,17 @@ import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { API_BASE_URL } from '../constants';
 
+interface User {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export default function useAuth() {
-  const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     AsyncStorage.getItem('token').then(storedToken => {
@@ -15,7 +21,7 @@ export default function useAuth() {
     });
   }, []);
 
-  const login = useCallback(async (email, password) => {
+  const login = useCallback(async (email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -31,14 +37,14 @@ export default function useAuth() {
       setUser(data.user || null);
       setLoading(false);
       return true;
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
       setLoading(false);
       return false;
     }
   }, []);
 
-  const register = useCallback(async (name, email, password) => {
+  const register = useCallback(async (name: string, email: string, password: string) => {
     setLoading(true);
     setError(null);
     try {
@@ -53,7 +59,7 @@ export default function useAuth() {
       }
       setLoading(false);
       return true;
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
       setLoading(false);
       return false;

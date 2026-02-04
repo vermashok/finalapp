@@ -2,7 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 
-const Header = ({ title }) => (
+interface HeaderProps {
+  title: string;
+}
+
+const Header: React.FC<HeaderProps> = ({ title }) => (
   <View style={styles.header}>
     <FontAwesome name="newspaper-o" size={28} color="#22223b" style={styles.icon} />
     <Text style={styles.title}>{title}</Text>

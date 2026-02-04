@@ -1,8 +1,13 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
+import { NavigationScreenProp } from 'react-navigation';
 
-const Sidebar = ({ navigation }) => {
+interface SidebarProps {
+  navigation: NavigationScreenProp<any, any>;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ navigation }) => {
   return (
     <View style={styles.sidebar}>
       <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Feed')}>
